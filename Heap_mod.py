@@ -3,110 +3,155 @@ class Heap:
     def __init__(self):
         self.HeapArray = []
         self.Root=None
+    
+    def GetMax(self):
+        #Вернуть значение корня и перестроить кучу
+        level=0
+        a=[]
+        if len(self.HeapArray)==0:
+            return -1
+        else:
+            pass
+        pos=len(self.HeapArray)
+        #pos_for_none=pos
+        while pos//2!=0:
+            level+=1
+            pos=pos//2
+        max=self.HeapArray.pop(0)
+        None_in_array=False
+        for i in range(0,len(self.HeapArray)):
+            if self.HeapArray[i]==None:
+                None_in_array=True
+                number=i
+                break
+        if None_in_array==False:
+            number=len(self.HeapArray)
+        while len(self.HeapArray)-number>0:
+            self.HeapArray.pop()
+            if len(self.HeapArray)==0:
+                """
+                for _ in range(0,pos_for_none):
+                    self.HeapArray.append(None)
+                """    
+                return max
+        self.HeapArray.insert(0,self.HeapArray.pop())
+        for j in range(0,len(self.HeapArray)):
+            a.append(self.HeapArray[j])
+        while len(self.HeapArray)!=0:
+            self.HeapArray.pop()
+        self.MakeHeap(a,level)
+        return max
 
-    def Data_Sort(self,data):
-        #Сортирует исходный массив по убыванию 
-        length=len(data)
-        for i in range(0,length):
-            for j in range(i,length):
-                if data[i]<data[j]:
-                    data[i],data[j]=data[j],data[i]
-                else:
-                    pass
-        return data
-
-
+    def ChangePosition(self,i,a):
+        #Метод всплытия / погружения ключа
+        q_ty=len(a)
+        if self.HeapArray[i]<0 or self.HeapArray[i] is None:
+            return None
+        for element in range(0,q_ty):
+            leftchild=2*element+1
+            rightchild=2*element+2
+            child=None
+            if leftchild<q_ty and self.HeapArray[leftchild]!=None:
+                if rightchild<q_ty and self.HeapArray[rightchild]!=None:
+                    if self.HeapArray[leftchild]>self.HeapArray[rightchild]:
+                        maxchild=self.HeapArray[leftchild]
+                        child=False
+                    else: 
+                        maxchild=self.HeapArray[rightchild]
+                        child=True
+                else: 
+                    maxchild=self.HeapArray[leftchild]
+                    child=False
+                if self.HeapArray[element]<maxchild:
+                    data=self.HeapArray[element]
+                    self.HeapArray[element]=maxchild
+                    if child==False:
+                        self.HeapArray[2*element+1]=data
+                        element=2*element+1
+                    else:
+                        self.HeapArray[2*element+2]=data
+                        element=2*element+2
+            else:
+                element+=1
+    
     def MakeHeap(self, a, depth=0):
 	# создаём массив кучи HeapArray из заданного
-        # размер массива выбираем на основе глубины depth 
-        if not a:
-            return None
-        if depth==None or depth<0:
-            return None
+    # размер массива выбираем на основе глубины depth
         q_ty=0
+        if depth<0:
+            return None
         for i in range(0,depth+1):
             q_ty=q_ty+2**i
-        a=self.Data_Sort(a)
-        len_a=len(a)
-        if q_ty>len_a:
-            limit=len_a
-        else: 
-            limit=q_ty
-        for j in range(0,limit):
-            if a[j]<0:
-                return None 
-            self.HeapArray.append(a[j])
-        if len_a<q_ty:
-            delta=q_ty-len_a-1
-            while delta>=0:
-                self.HeapArray.append(None)
-                delta-=1 
-        return depth
-    
-    def Getdepth(self,a):
-        # Вернуть значение глубины массива
-        if len(a)==0:
-            return 0
-        depth=0
-        array_q_ty=len(a)
-        while array_q_ty>0:
-            depth+=1
-            array_q_ty=array_q_ty//2
-        return depth-1
-
-
-    def GetMax(self):
-        # вернуть значение корня и перестроить кучу
-        if self.HeapArray[0]<0 or self.HeapArray[0]==None: 
-            return -1 # если куча пуста
+        #print(len(a),q_ty)
+        if len(a)>q_ty:
+            size=q_ty
         else:
-            max_key=self.HeapArray.pop(0)
-            self.HeapArray.append(None)
-            return max_key
+            size=len(a)
+        for key in range(0,size):
+            self.HeapArray.append(a[key])
+            for everykey in range(0,len(self.HeapArray)):
+                self.ChangePosition(everykey,self.HeapArray)
+        if q_ty-len(self.HeapArray)>0:
+            while q_ty-len(self.HeapArray)>0:
+                self.HeapArray.append(None)
+        self.Root=self.HeapArray[0]
 
 
     def Add(self, key):
 	# добавляем новый элемент key в кучу и перестраиваем её
-        if key<0 and key==None:
-            return None
-        len_heap=len(self.HeapArray)
-        if len_heap==0:
-            self.HeapArray.append(key)
+        a=[]     
+        if key!=None and key>0:
+            pass
         else:
-            None_id=False
-            for i in range(0,len_heap):
-                if self.HeapArray[i]==None:
-                    self.HeapArray[i]=key
-                    None_id=True
+            return None
+        if len(self.HeapArray)==0:
+            a=[]
+            a.append(key)
+            self.MakeHeap(a)
+        else:
+            level=0
+            pos=len(self.HeapArray)
+            while pos//2!=0:
+                level+=1
+                pos=pos//2
+            for everyelement in range(0,len(self.HeapArray)):
+                if self.HeapArray[everyelement]==None:
                     break
-                else:
-                    pass
-            if None_id==False:
-                return False # если куча вся заполнена
+            #print(everyelement)
+            if self.HeapArray[everyelement]==None:
+                self.HeapArray[everyelement]=key
+                while len(self.HeapArray)-everyelement-1>0:
+                    self.HeapArray.pop()
+                for i in range(0,len(self.HeapArray)):
+                    a.append(self.HeapArray[i])
+                while len(self.HeapArray)!=0:    
+                    self.HeapArray.pop()
+                #print(self.HeapArray)
+                #print(a)
+                self.MakeHeap(a,level)
             else:
-                depth=self.Getdepth(self.HeapArray)
-                None_q_ty=0
-                for everykey in range(0,len_heap):
-                    if self.HeapArray[everykey]==None:
-                        None_q_ty+=1
-                for _ in range(0,None_q_ty):
-                    self.HeapArray.remove(None)
-                a=[]
-                for key in range(0,len(self.HeapArray)):
-                    a.append(self.HeapArray[key])
-                self.HeapArray.clear()
-                self.MakeHeap(a,depth)
+                return False
 
+
+            
+        
 """
 z=Heap()
-a=[1,3,5,6,89,0,44,5]
-
-b=[]
-print(z.Getdepth(a))
-#print(a)
-zz=z.MakeHeap(a,2)
+a=[]
+z.MakeHeap(a,2)
 print(z.HeapArray)
-print(z.Add(55))
+#z.Add(86000)
 print(z.HeapArray)
-print(z.GetMax(),z.HeapArray)
+z.GetMax()
+print(z.HeapArray)
+print(z.GetMax())
+print(z.HeapArray)
+z.Add(23)
+z.Add(None)
+z.Add(40)
+print(z.HeapArray)
+print(z.Root)
+z.GetMax()
+print(z.HeapArray)
+print(z.Root)
 """

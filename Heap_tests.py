@@ -13,17 +13,14 @@ class Heap_Tests(unittest.TestCase):
     # Тетирование работы пирамиды
 
     def test_zero(self):
-        # Тестирование пустой пирамиды, добавление элемента, получение максимального элемента
-        a=Create_masive(massive_size=0)
-        Heap_test=Heap_mod.Heap()
-        Heap_test.MakeHeap(a)
-        self.assertEqual([],Heap_test.HeapArray)
-        new_key=random.randint(101,200)
-        Heap_test.Add(new_key)
-        self.assertEqual(new_key,Heap_test.HeapArray[0])
-        self.assertEqual(1,len(Heap_test.HeapArray))
-        self.assertEqual(new_key,Heap_test.GetMax())
-        self.assertEqual(None,Heap_test.HeapArray[0])
+        # Тестирование пустой пирамиды: добавление элемента, получение максимального элемента
+        a=[]
+        Heap_Test=Heap_mod.Heap()
+        new_key=random.randint(1,100)
+        Heap_Test.MakeHeap(a,1)
+        Heap_Test.Add(new_key)
+        self.assertEqual(Heap_Test.GetMax(),new_key)
+
     
     def test_some_elements(self):
         # Тестирование пиромиды с количеством элементов не равным 0 и 1
@@ -44,28 +41,15 @@ class Heap_Tests(unittest.TestCase):
         Heap_test_2=Heap_mod.Heap()
         Heap_test_2.MakeHeap(b,deep_heap)
         new_key=random.randint(101,200)
-        Heap_test_2.Add(new_key)
+        self.assertEqual(Heap_test_2.Add(new_key),False)
         new_key_in_heap=False
+        #print(Heap_test_2.HeapArray)
         for j in range(0,len(Heap_test_2.HeapArray)):
             if Heap_test_2.HeapArray[j]==new_key:
                 new_key_in_heap=True
                 break
         self.assertEqual(False,new_key_in_heap)
-
-
-
-
-
-
-
-         
-
     
-
-
-
-
-
 
 if __name__ == '__main__':
     try:
