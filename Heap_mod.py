@@ -3,21 +3,64 @@ class Heap:
     def __init__(self):
         self.HeapArray = []
         self.Root=None
+
+    def MaxElement(self,i,a):
+        #Возвращает индекс максимального элемента среди родителя и двух детей
+        if len(a)!=0:
+            if a[i]!=None:
+                leftchild=2*i+1
+                rightchild=2*i+2
+            else:
+                return -1
+        else:
+            return -1
+        #Ищем максимальный элемент среди родителя и его детей
+        directionleft=None
+        if leftchild<len(a):
+            if rightchild<len(a):
+                if a[leftchild]>=a[rightchild]:
+                    maxelement=a[leftchild]
+                    directionleft=True
+                elif a[leftchild]<a[rightchild]:
+                    maxelement=a[rightchild]
+                    directionleft=False
+            else:
+                maxelement=a[leftchild]
+                directionleft=True
+        else:
+                maxelement=a[i]
+        data=a[i]
+        if data>=maxelement:
+            return i
+        else:
+            if directionleft==True:
+                return 2*i+1
+            else:
+                return 2*i+2
+
     
     def GetMax(self):
         #Вернуть значение корня и перестроить кучу
+        #Если куча пуста вернуть -1
+        """
         level=0
-        a=[]
         if len(self.HeapArray)==0:
             return -1
         else:
             pass
+        #Расчет кол-ва уровней в куче 
+        """
+        size=len(self.HeapArray)
+        """
         pos=len(self.HeapArray)
-        #pos_for_none=pos
         while pos//2!=0:
             level+=1
             pos=pos//2
+        """
+        #Присвоение максимального элемента 
         max=self.HeapArray.pop(0)
+        #Поиск позиции последнего элемента не равного None
+        # и удаление всех элементов со значением None
         None_in_array=False
         for i in range(0,len(self.HeapArray)):
             if self.HeapArray[i]==None:
@@ -28,19 +71,28 @@ class Heap:
             number=len(self.HeapArray)
         while len(self.HeapArray)-number>0:
             self.HeapArray.pop()
+        # Если после удалениея в куче не осталось элементов!=None
+        #Вернуть max
             if len(self.HeapArray)==0:
-                """
-                for _ in range(0,pos_for_none):
-                    self.HeapArray.append(None)
-                """    
                 return max
+        #Вставка последнего элемента в нулевую позицию
         self.HeapArray.insert(0,self.HeapArray.pop())
-        for j in range(0,len(self.HeapArray)):
-            a.append(self.HeapArray[j])
-        while len(self.HeapArray)!=0:
-            self.HeapArray.pop()
-        self.MakeHeap(a,level)
+        print(self.HeapArray)
+        
+        current_number=0
+        number_for_change=self.MaxElement(current_number,self.HeapArray)
+        while current_number!=number_for_change:
+            data=self.HeapArray[current_number]
+            self.HeapArray[current_number]=self.HeapArray[number_for_change]
+            self.HeapArray[number_for_change]=data
+            current_number=number_for_change
+            number_for_change=self.MaxElement(current_number,self.HeapArray)
+        print(self.HeapArray)    
+        while size-len(self.HeapArray)>0:
+            self.HeapArray.append(None)
+        print(self.HeapArray)
         return max
+    
 
     def ChangePosition(self,i,a):
         #Метод всплытия / погружения ключа
@@ -135,15 +187,15 @@ class Heap:
 
             
         
-"""
+
 z=Heap()
-a=[]
+a=[2,4,5,6,1]
 z.MakeHeap(a,2)
 print(z.HeapArray)
-#z.Add(86000)
+z.Add(86000)
 print(z.HeapArray)
 z.GetMax()
-print(z.HeapArray)
+"""
 print(z.GetMax())
 print(z.HeapArray)
 z.Add(23)
@@ -155,3 +207,4 @@ z.GetMax()
 print(z.HeapArray)
 print(z.Root)
 """
+
