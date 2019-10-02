@@ -77,7 +77,7 @@ class Heap:
                 return max
         #Вставка последнего элемента в нулевую позицию
         self.HeapArray.insert(0,self.HeapArray.pop())
-        print(self.HeapArray)
+        #print(self.HeapArray)
         
         current_number=0
         number_for_change=self.MaxElement(current_number,self.HeapArray)
@@ -87,10 +87,10 @@ class Heap:
             self.HeapArray[number_for_change]=data
             current_number=number_for_change
             number_for_change=self.MaxElement(current_number,self.HeapArray)
-        print(self.HeapArray)    
+        #print(self.HeapArray)    
         while size-len(self.HeapArray)>0:
             self.HeapArray.append(None)
-        print(self.HeapArray)
+        #print(self.HeapArray)
         return max
     
 
@@ -184,18 +184,39 @@ class Heap:
             else:
                 return False
 
+class HeapSort:
+    def __init__(self,array):
+        self.HeapSort=Heap()
+        lenarray=len(array)
+        q_ty=0
+        i=0
+        while q_ty<=lenarray:
+            q_ty=q_ty+2**i
+            i+=1
+        if lenarray==0:
+            self.HeapSort.MakeHeap(array,0)
+        else: 
+            self.HeapSort.MakeHeap(array,i-1)
+        print(self.HeapSort.HeapArray)
+    
+    def GetNextMax(self):
+        #Выдаёт максимальный элемент кучи, если куча пуста то -1
+        return self.HeapSort.GetMax()
+
+
 
             
         
-
-z=Heap()
+"""
 a=[2,4,5,6,1]
-z.MakeHeap(a,2)
+z=HeapSort(a)
+print(z.GetNextMax())
+print(z.HeapSort.HeapArray)
 print(z.HeapArray)
 z.Add(86000)
 print(z.HeapArray)
-z.GetMax()
-"""
+print(z.GetMax())
+print(z.HeapArray)
 print(z.GetMax())
 print(z.HeapArray)
 z.Add(23)
